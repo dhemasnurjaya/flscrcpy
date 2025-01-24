@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flscrcpy/core/data/local/cache.dart';
 import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_mirroring_model.dart';
@@ -10,6 +12,9 @@ abstract class ScrcpyLocalDataSource {
 
   /// Start scrcpy with the given arguments.
   Future<void> startScrcpy(ScrcpyRunArgsModel args);
+
+  /// Stop scrcpy with the given serial.
+  Future<void> stopScrcpy(String serial);
 }
 
 class ScrcpyLocalDataSourceImpl implements ScrcpyLocalDataSource {
@@ -29,11 +34,33 @@ class ScrcpyLocalDataSourceImpl implements ScrcpyLocalDataSource {
 
   @override
   Future<void> startScrcpy(ScrcpyRunArgsModel args) async {
-    final device = DeviceMirroringModel(serial: args.serial, logs: []);
     final shell = await execCommand.stream('scrcpy', args.list);
-    shell.stream.listen((output) {
-      device.logs.add(output);
-      mirroringCache.add(key: args.serial, value: device);
-    });
+    final device = DeviceMirroringModel(
+      shell: shell,
+      serial: args.serial,
+      logs: [],
+    );
+    shell.controller.stream.listen(
+      (output) {
+        device.logs.add(output);
+        mirroringCache.add(args.serial, device);
+      },
+      onDone: () {
+        shell.controller.close();
+      },
+      onError: (e) {
+        shell.controller.close();
+      },
+    );
+  }
+
+  @override
+  Future<void> stopScrcpy(String serial) async {
+    final device = await mirroringCache.read(serial);
+    if (device != null) {
+      device.shell.kill();
+      await mirroringCache.remove(serial);
+    }
+    return Future.value();
   }
 }

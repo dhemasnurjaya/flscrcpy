@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flscrcpy/features/screen_mirroring/presentation/widgets/connected_devices_widget.dart';
+import 'package:flscrcpy/features/screen_mirroring/presentation/widgets/connected_device_list_widget.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/widgets/scrcpy_info_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
         children: [
           ScrcpyInfoWidget(),
           const SizedBox(height: 24),
-          ConnectedDevicesWidget(),
+          ConnectedDeviceListWidget(),
         ],
       ),
     );

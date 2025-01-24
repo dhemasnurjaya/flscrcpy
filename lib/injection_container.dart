@@ -8,10 +8,14 @@ import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_mirroring_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_logs.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/list_connected_devices.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/executable_info/executable_info_bloc.dart';
+import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -71,6 +75,15 @@ void setup() {
   getIt.registerLazySingleton<ListConnectedDevices>(
     () => ListConnectedDevices(getIt()),
   );
+  getIt.registerLazySingleton<StartMirroring>(
+    () => StartMirroring(getIt()),
+  );
+  getIt.registerLazySingleton<StopMirroring>(
+    () => StopMirroring(getIt()),
+  );
+  getIt.registerLazySingleton<GetMirroringLogs>(
+    () => GetMirroringLogs(getIt()),
+  );
 
   // blocs
   getIt.registerSingletonAsync<ThemeModeCubit>(
@@ -93,6 +106,12 @@ void setup() {
       listConnectedDevices: getIt(),
     ),
   );
+  getIt.registerFactory<MirroringBloc>(
+    () => MirroringBloc(
+      startMirroring: getIt(),
+      stopMirroring: getIt(),
+    ),
+  );
 
   // caches
   getIt.registerLazySingleton<Cache<String, DeviceMirroringModel>>(
@@ -111,6 +130,9 @@ List<BlocProvider> get blocProviders => [
         create: (context) => getIt(),
       ),
       BlocProvider<DevicesBloc>(
+        create: (context) => getIt(),
+      ),
+      BlocProvider<MirroringBloc>(
         create: (context) => getIt(),
       ),
     ];

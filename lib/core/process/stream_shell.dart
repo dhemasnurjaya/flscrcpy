@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:process_run/process_run.dart';
 
 class StreamShell {
@@ -9,20 +11,21 @@ class StreamShell {
     _shell = Shell(stdout: _controller.sink);
   }
 
-  Stream<String> get stream => _controller.stream;
+  ShellLinesController get controller => _controller;
 
   Future<void> run(String command, List<String> arguments) async {
     try {
       await _shell.runExecutableArguments(command, arguments);
-    } catch (e) {
-      _controller.close();
-      throw Exception('Failed while executing: $e');
-    } finally {
-      _controller.close();
+    } on Exception catch (e) {
+      final isKilledOnPurpose =
+          e is ShellException && e.message == 'Killed by framework';
+      if (!isKilledOnPurpose) {
+        throw Exception('Failed while executing: $e');
+      }
     }
   }
 
-  void close() {
-    _controller.close();
+  void kill() {
+    _shell.kill(ProcessSignal.sigint);
   }
 }
