@@ -42,11 +42,21 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
   }
 
   @override
-  Future<Either<Failure, void>> startScreenMirroring(String serial) async {
+  Future<Either<Failure, void>> startMirroring(String serial) async {
     try {
       // TODO: make args configurable
       final args = ScrcpyRunArgsModel(serial: serial, videoBitrate: 4000000);
-      scrcpyLocalDataSource.startScrcpy(args);
+      await scrcpyLocalDataSource.startScrcpy(args);
+      return right(null);
+    } catch (e) {
+      return left(ExecutionFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> stopMirroring(String serial) async {
+    try {
+      await scrcpyLocalDataSource.stopScrcpy(serial);
       return right(null);
     } catch (e) {
       return left(ExecutionFailure(message: e.toString()));

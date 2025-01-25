@@ -1,18 +1,17 @@
-import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
-import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
+import 'package:flscrcpy/features/screen_mirroring/presentation/widgets/connected_device_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
-class ConnectedDevicesWidget extends StatefulWidget {
-  const ConnectedDevicesWidget({super.key});
+class ConnectedDeviceListWidget extends StatefulWidget {
+  const ConnectedDeviceListWidget({super.key});
 
   @override
-  State<ConnectedDevicesWidget> createState() => _ConnectedDevicesWidgetState();
+  State<ConnectedDeviceListWidget> createState() =>
+      _ConnectedDeviceListWidgetState();
 }
 
-class _ConnectedDevicesWidgetState extends State<ConnectedDevicesWidget> {
+class _ConnectedDeviceListWidgetState extends State<ConnectedDeviceListWidget> {
   @override
   void initState() {
     super.initState();
@@ -49,7 +48,9 @@ class _ConnectedDevicesWidgetState extends State<ConnectedDevicesWidget> {
             if (state is DevicesFound) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: state.devices.map(_buildDeviceItem).toList(),
+                children: state.devices
+                    .map((device) => ConnectedDeviceWidget(device))
+                    .toList(),
               );
             }
 
@@ -63,40 +64,6 @@ class _ConnectedDevicesWidgetState extends State<ConnectedDevicesWidget> {
 
             return Text('Reading devices...');
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeviceItem(DeviceInfo device) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(device.productModel),
-            Text(device.productDevice),
-          ],
-        ),
-        Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                // TODO: show detailed device info
-              },
-              icon: Icon(Icons.info_outlined),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO: start screen mirroring
-                // TODO: use proper bloc & use case
-                GetIt.I<ScreenMirroringRepository>()
-                    .startScreenMirroring(device.adbSerial);
-              },
-              icon: Icon(Icons.play_arrow),
-            ),
-          ],
         ),
       ],
     );

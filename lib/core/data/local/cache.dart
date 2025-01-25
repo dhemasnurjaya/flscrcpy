@@ -1,13 +1,13 @@
 /// Cache interface
 abstract class Cache<K, V> {
   /// Add a value to the cache.
-  Future<void> add({required K key, required V value});
+  Future<void> add(K key, V value);
 
   /// Read a value from the cache, returns null if the value is not found.
-  Future<V?> read({required K key});
+  Future<V?> read(K key);
 
   /// Remove a value from the cache, returns null if the value is not found.
-  Future<V?> remove({required K key});
+  Future<V?> remove(K key);
 
   /// Clear the cache.
   Future<void> clear();
@@ -18,7 +18,7 @@ class MemoryCache<K, V> implements Cache<K, V> {
   final Map<K, V> _cache = {};
 
   @override
-  Future<void> add({required K key, required V value}) async {
+  Future<void> add(K key, V value) async {
     _cache[key] = value;
   }
 
@@ -28,12 +28,12 @@ class MemoryCache<K, V> implements Cache<K, V> {
   }
 
   @override
-  Future<V?> read({required K key}) async {
+  Future<V?> read(K key) async {
     return _cache[key];
   }
 
   @override
-  Future<V?> remove({required K key}) async {
+  Future<V?> remove(K key) async {
     return _cache.remove(key);
   }
 }

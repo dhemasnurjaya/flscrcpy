@@ -11,5 +11,8 @@ abstract class ScreenMirroringRepository {
   Future<Either<Failure, List<DeviceInfo>>> listDevices();
 
   /// Connect to a device and start screen mirroring.
-  Future<Either<Failure, void>> startScreenMirroring(String serial);
+  Future<Either<Failure, void>> startMirroring(String serial);
+
+  /// Stop screen mirroring.
+  Future<Either<Failure, void>> stopMirroring(String serial);
 }
