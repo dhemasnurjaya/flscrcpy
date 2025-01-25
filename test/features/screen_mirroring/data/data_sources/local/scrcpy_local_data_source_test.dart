@@ -72,7 +72,11 @@ void main() {
     expect(result, tExpectedModel);
   });
 
-  test('should run scrcpy with the given arguments', () async {
+  test('should start scrcpy with the given arguments', () async {
+    // TODO: implement test
+  });
+
+  test('should stop scrcpy with the given serial', () async {
     // TODO: implement test
   });
 }
