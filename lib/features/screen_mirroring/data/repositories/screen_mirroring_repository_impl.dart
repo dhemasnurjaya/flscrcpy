@@ -21,7 +21,7 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
     try {
       final scrcpyInfo = await scrcpyLocalDataSource.getScrcpyInfo();
       return right(ScrcpyInfo.fromModel(scrcpyInfo));
-    } catch (e) {
+    } on Exception catch (e) {
       return left(ExecutionFailure(message: e.toString()));
     }
   }
@@ -36,7 +36,7 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
       });
       final devices = await Future.wait(getDevices);
       return right(devices.toList());
-    } catch (e) {
+    } on Exception catch (e) {
       return left(ExecutionFailure(message: e.toString()));
     }
   }
@@ -48,7 +48,7 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
       final args = ScrcpyRunArgsModel(serial: serial, videoBitrate: 4000000);
       await scrcpyLocalDataSource.startScrcpy(args);
       return right(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return left(ExecutionFailure(message: e.toString()));
     }
   }
@@ -58,7 +58,7 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
     try {
       await scrcpyLocalDataSource.stopScrcpy(serial);
       return right(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return left(ExecutionFailure(message: e.toString()));
     }
   }
