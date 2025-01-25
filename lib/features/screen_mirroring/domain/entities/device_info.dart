@@ -30,4 +30,7 @@ class DeviceInfo with _$DeviceInfo {
       securityPatch: deviceInfoModel.securityPatch ?? 'Unknown Security Patch',
     );
   }
+
+  @override
+  String toString() => adbSerial;
 }

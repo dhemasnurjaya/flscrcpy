@@ -11,10 +11,10 @@ class MirroringInitial extends MirroringState {
   List<Object> get props => [];
 }
 
-class MirroringLoading extends MirroringState {
+class MirroringStarting extends MirroringState {
   final DeviceInfo device;
 
-  const MirroringLoading(this.device);
+  const MirroringStarting(this.device);
 
   @override
   List<Object> get props => [device];
@@ -24,6 +24,15 @@ class MirroringStarted extends MirroringState {
   final DeviceInfo device;
 
   const MirroringStarted(this.device);
+
+  @override
+  List<Object> get props => [device];
+}
+
+class MirroringStopping extends MirroringState {
+  final DeviceInfo device;
+
+  const MirroringStopping(this.device);
 
   @override
   List<Object> get props => [device];

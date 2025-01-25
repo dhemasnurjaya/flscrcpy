@@ -24,7 +24,8 @@ class MirroringBloc extends Bloc<MirroringEvent, MirroringState> {
     StartMirroringEvent event,
     Emitter<MirroringState> emit,
   ) async {
-    emit(MirroringLoading(event.device));
+    emit(MirroringStarting(event.device));
+    await Future.delayed(const Duration(seconds: 1)); // prevent spamming
     final result = await startMirroring(StartMirroringParams(event.device));
     result.fold(
       (failure) => emit(MirroringError(
@@ -39,7 +40,8 @@ class MirroringBloc extends Bloc<MirroringEvent, MirroringState> {
     StopMirroringEvent event,
     Emitter<MirroringState> emit,
   ) async {
-    emit(MirroringLoading(event.device));
+    emit(MirroringStopping(event.device));
+    await Future.delayed(const Duration(seconds: 1)); // prevent spamming
     final result = await stopMirroring(StopMirroringParams(event.device));
     result.fold(
       (failure) => emit(MirroringError(

@@ -28,9 +28,18 @@ class _ConnectedDeviceWidgetState extends State<ConnectedDeviceWidget> {
       bloc: _mirroringBloc,
       builder: (context, state) {
         final isStarted = state is MirroringStarted;
+        final isLoading =
+            state is MirroringStarting || state is MirroringStopping;
         final isStopped =
             state is MirroringStopped || state is MirroringInitial;
         // final isError = state is MirroringError;
+
+        final deviceInfoButton = IconButton(
+          onPressed: () {
+            // TODO: show detailed device info
+          },
+          icon: Icon(Icons.info_outlined),
+        );
 
         final startStopButton = IconButton(
           onPressed: () {
@@ -40,7 +49,13 @@ class _ConnectedDeviceWidgetState extends State<ConnectedDeviceWidget> {
               _mirroringBloc.add(StartMirroringEvent(widget.device));
             }
           },
-          icon: Icon(isStopped ? Icons.play_arrow : Icons.stop),
+          icon: isLoading
+              ? SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(),
+                )
+              : Icon(isStopped ? Icons.play_arrow : Icons.stop),
         );
 
         return Row(
@@ -55,12 +70,7 @@ class _ConnectedDeviceWidgetState extends State<ConnectedDeviceWidget> {
             ),
             Row(
               children: [
-                IconButton(
-                  onPressed: () {
-                    // TODO: show detailed device info
-                  },
-                  icon: Icon(Icons.info_outlined),
-                ),
+                deviceInfoButton,
                 startStopButton,
               ],
             ),
