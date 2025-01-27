@@ -203,11 +203,6 @@ class _$DeviceInfoImpl implements _DeviceInfo {
   final String securityPatch;
 
   @override
-  String toString() {
-    return 'DeviceInfo(adbSerial: $adbSerial, productModel: $productModel, productDevice: $productDevice, androidVersion: $androidVersion, sdkVersion: $sdkVersion, buildVersion: $buildVersion, securityPatch: $securityPatch)';
-  }
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&

@@ -1,27 +1,27 @@
 import 'package:flscrcpy/core/data/local/cache.dart';
 import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
-import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_mirroring_model.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_info_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockExecCommand extends Mock implements ExecCommand {}
 
-class MockDeviceMirroringCache extends Mock
-    implements Cache<String, DeviceMirroringModel> {}
+class MockMirroringStateCache extends Mock
+    implements Cache<String, MirroringStatusModel> {}
 
 void main() {
   late MockExecCommand mockExecCommand;
-  late MockDeviceMirroringCache mockDeviceMirroringCache;
+  late MockMirroringStateCache mockMirroringStateCache;
   late ScrcpyLocalDataSource dataSource;
 
   setUp(() {
     mockExecCommand = MockExecCommand();
-    mockDeviceMirroringCache = MockDeviceMirroringCache();
+    mockMirroringStateCache = MockMirroringStateCache();
     dataSource = ScrcpyLocalDataSourceImpl(
       execCommand: mockExecCommand,
-      mirroringCache: mockDeviceMirroringCache,
+      mirroringStatusCache: mockMirroringStateCache,
     );
   });
 
@@ -78,5 +78,16 @@ void main() {
 
   test('should stop scrcpy with the given serial', () async {
     // TODO: implement test
+  });
+
+  test('should get the device mirroring state with the given serial', () async {
+    // arrange
+    const tSerial = 'serial';
+    when(() => mockMirroringStateCache.read(tSerial))
+        .thenAnswer((_) async => null);
+    // act
+    final result = await dataSource.getDeviceStatus(tSerial);
+    // assert
+    expect(result, isNull);
   });
 }

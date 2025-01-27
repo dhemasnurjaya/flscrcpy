@@ -6,9 +6,9 @@ import 'package:flscrcpy/core/network/network.dart';
 import 'package:flscrcpy/core/presentation/theme/theme_mode_cubit.dart';
 import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
-import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_mirroring_model.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
-import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_logs.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_state.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/list_connected_devices.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
@@ -53,7 +53,7 @@ void setup() {
   getIt.registerLazySingleton<ScrcpyLocalDataSource>(
     () => ScrcpyLocalDataSourceImpl(
       execCommand: getIt(),
-      mirroringCache: getIt(),
+      mirroringStatusCache: getIt(),
     ),
   );
   getIt.registerLazySingleton<AdbLocalDataSource>(
@@ -81,8 +81,8 @@ void setup() {
   getIt.registerLazySingleton<StopMirroring>(
     () => StopMirroring(getIt()),
   );
-  getIt.registerLazySingleton<GetMirroringLogs>(
-    () => GetMirroringLogs(getIt()),
+  getIt.registerLazySingleton<GetMirroringState>(
+    () => GetMirroringState(getIt()),
   );
 
   // blocs
@@ -114,8 +114,8 @@ void setup() {
   );
 
   // caches
-  getIt.registerLazySingleton<Cache<String, DeviceMirroringModel>>(
-    () => MemoryCache<String, DeviceMirroringModel>(),
+  getIt.registerLazySingleton<Cache<String, MirroringStatusModel>>(
+    () => MemoryCache<String, MirroringStatusModel>(),
   );
 
   // other

@@ -2,12 +2,12 @@
 
 import 'package:flscrcpy/core/process/stream_shell.dart';
 
-class DeviceMirroringModel {
+class MirroringStatusModel {
   final StreamShell shell;
   final String serial;
   final List<String> logs;
 
-  DeviceMirroringModel({
+  MirroringStatusModel({
     required this.shell,
     required this.serial,
     required this.logs,
