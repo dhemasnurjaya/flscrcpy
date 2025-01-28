@@ -1,11 +1,14 @@
 import 'package:flscrcpy/core/error/failures.dart';
+import 'package:flscrcpy/core/process/stream_shell.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/adb_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_info_model.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_info_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_run_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/repositories/screen_mirroring_repository_impl.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -187,6 +190,58 @@ void main() {
       final result = await repository.stopMirroring(tSerial);
       // assert
       final tExpected = ExecutionFailure(message: tException.toString());
+      result.fold(
+        (l) => expect(l, equals(tExpected)),
+        (r) => fail('should return a ExecutionFailure'),
+      );
+    });
+  });
+
+  group('getDeviceState', () {
+    const tSerial = 'serial';
+
+    test('should return the device state with the given serial', () async {
+      // arrange
+      final tModel = MirroringStatusModel(
+        shell: StreamShell(), // TODO: mock StreamShell
+        serial: tSerial,
+        logs: [],
+      );
+      when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
+          .thenAnswer((_) async => tModel);
+      // act
+      final result = await repository.getDeviceState(tSerial);
+      // assert
+      final tExpected = MirroringStatus.fromModel(tModel);
+      result.fold(
+        (l) => fail('should return a MirroringState'),
+        (r) => expect(r, equals(tExpected)),
+      );
+    });
+
+    test('should return a ExecutionFailure when an exception occurs', () async {
+      // arrange
+      final tException = Exception('error');
+      when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
+          .thenThrow(tException);
+      // act
+      final result = await repository.getDeviceState(tSerial);
+      // assert
+      final tExpected = ExecutionFailure(message: tException.toString());
+      result.fold(
+        (l) => expect(l, equals(tExpected)),
+        (r) => fail('should return a ExecutionFailure'),
+      );
+    });
+
+    test('should return a ExecutionFailure when the state is null', () async {
+      // arrange
+      when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
+          .thenAnswer((_) async => null);
+      // act
+      final result = await repository.getDeviceState(tSerial);
+      // assert
+      final tExpected = ExecutionFailure(message: 'Device state not found');
       result.fold(
         (l) => expect(l, equals(tExpected)),
         (r) => fail('should return a ExecutionFailure'),

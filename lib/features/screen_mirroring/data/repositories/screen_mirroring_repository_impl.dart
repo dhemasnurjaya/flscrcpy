@@ -3,6 +3,7 @@ import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/adb_l
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_run_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -58,6 +59,19 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
     try {
       await scrcpyLocalDataSource.stopScrcpy(serial);
       return right(null);
+    } on Exception catch (e) {
+      return left(ExecutionFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MirroringStatus>> getDeviceState(String serial) async {
+    try {
+      final state = await scrcpyLocalDataSource.getDeviceStatus(serial);
+      if (state == null) {
+        return left(ExecutionFailure(message: 'Device state not found'));
+      }
+      return right(MirroringStatus.fromModel(state));
     } on Exception catch (e) {
       return left(ExecutionFailure(message: e.toString()));
     }

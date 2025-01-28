@@ -15,7 +15,9 @@ abstract class Cache<K, V> {
 
 /// Memory cache implementation using a Map.
 class MemoryCache<K, V> implements Cache<K, V> {
-  final Map<K, V> _cache = {};
+  final Map<K, V> _cache;
+
+  MemoryCache({Map<K, V>? mapImpl}) : _cache = mapImpl ?? <K, V>{};
 
   @override
   Future<void> add(K key, V value) async {
