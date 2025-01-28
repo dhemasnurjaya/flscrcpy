@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flscrcpy/core/presentation/router/app_router.gr.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,14 @@ class _ConnectedDeviceWidgetState extends State<ConnectedDeviceWidget> {
           icon: Icon(Icons.info_outlined),
         );
 
+        final deviceStatusButton = IconButton(
+          onPressed: () {
+            context.router
+                .push(MirroringStatusRoute(serial: widget.device.adbSerial));
+          },
+          icon: Icon(Icons.terminal),
+        );
+
         final startStopButton = IconButton(
           onPressed: () {
             if (isStarted) {
@@ -70,6 +80,7 @@ class _ConnectedDeviceWidgetState extends State<ConnectedDeviceWidget> {
             ),
             Row(
               children: [
+                deviceStatusButton,
                 deviceInfoButton,
                 startStopButton,
               ],

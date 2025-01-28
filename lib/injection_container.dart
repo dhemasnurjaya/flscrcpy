@@ -15,6 +15,7 @@ import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirror
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/executable_info/executable_info_bloc.dart';
+import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirorring_status/mirroring_status_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,6 +113,11 @@ void setup() {
       stopMirroring: getIt(),
     ),
   );
+  getIt.registerFactory<MirroringStatusBloc>(
+    () => MirroringStatusBloc(
+      getMirroringState: getIt(),
+    ),
+  );
 
   // caches
   getIt.registerLazySingleton<Cache<String, MirroringStatusModel>>(
@@ -133,6 +139,9 @@ List<BlocProvider> get blocProviders => [
         create: (context) => getIt(),
       ),
       BlocProvider<MirroringBloc>(
+        create: (context) => getIt(),
+      ),
+      BlocProvider<MirroringStatusBloc>(
         create: (context) => getIt(),
       ),
     ];
