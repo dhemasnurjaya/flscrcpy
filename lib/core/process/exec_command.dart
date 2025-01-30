@@ -8,7 +8,7 @@ abstract class ExecCommand {
   Future<String> oneShot(String command, List<String> arguments);
 
   /// Execute a command and return the output as a stream of lines.
-  Future<StreamShell> stream(String command, List<String> arguments);
+  Future<StreamShellImpl> stream(String command, List<String> arguments);
 }
 
 class ExecCommandImpl implements ExecCommand {
@@ -23,8 +23,8 @@ class ExecCommandImpl implements ExecCommand {
   }
 
   @override
-  Future<StreamShell> stream(String command, List<String> arguments) async {
-    final shell = StreamShell();
+  Future<StreamShellImpl> stream(String command, List<String> arguments) async {
+    final shell = StreamShellImpl();
     unawaited(shell.run(command, arguments));
     return shell;
   }

@@ -203,7 +203,7 @@ void main() {
     test('should return the device state with the given serial', () async {
       // arrange
       final tModel = MirroringStatusModel(
-        shell: StreamShell(), // TODO: mock StreamShell
+        shell: StreamShellImpl(), // TODO: mock StreamShell
         serial: tSerial,
         logs: [],
       );

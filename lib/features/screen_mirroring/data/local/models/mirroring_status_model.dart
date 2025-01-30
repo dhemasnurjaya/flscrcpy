@@ -3,7 +3,7 @@
 import 'package:flscrcpy/core/process/stream_shell.dart';
 
 class MirroringStatusModel {
-  final StreamShell shell;
+  final StreamShellImpl shell;
   final String serial;
   final List<String> logs;
 
