@@ -1,9 +1,7 @@
-// TODO: make use this model to track the device mirroring state
-
 import 'package:flscrcpy/core/process/stream_shell.dart';
 
 class MirroringStatusModel {
-  final StreamShellImpl shell;
+  final StreamShell shell;
   final String serial;
   final List<String> logs;
 
