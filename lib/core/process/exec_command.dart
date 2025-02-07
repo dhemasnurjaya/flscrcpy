@@ -11,6 +11,7 @@ abstract class ExecCommand {
   Future<StreamShell> stream(String command, List<String> arguments);
 }
 
+// TODO: make this implementation testable
 class ExecCommandImpl implements ExecCommand {
   @override
   Future<String> oneShot(String command, List<String> arguments) async {
