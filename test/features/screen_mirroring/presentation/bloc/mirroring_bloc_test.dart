@@ -1,5 +1,8 @@
 import 'package:flscrcpy/core/error/failures.dart';
+import 'package:flscrcpy/core/process/stream_shell.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_status.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
@@ -11,17 +14,22 @@ class MockStartMirroring extends Mock implements StartMirroring {}
 
 class MockStopMirroring extends Mock implements StopMirroring {}
 
+class MockGetMirroringStatus extends Mock implements GetMirroringStatus {}
+
 void main() {
   late MockStartMirroring mockStartMirroring;
   late MockStopMirroring mockStopMirroring;
+  late MockGetMirroringStatus mockGetMirroringStatus;
   late MirroringBloc bloc;
 
   setUp(() {
     mockStartMirroring = MockStartMirroring();
     mockStopMirroring = MockStopMirroring();
+    mockGetMirroringStatus = MockGetMirroringStatus();
     bloc = MirroringBloc(
       startMirroring: mockStartMirroring,
       stopMirroring: mockStopMirroring,
+      getMirroringState: mockGetMirroringStatus,
     );
   });
 
@@ -46,11 +54,10 @@ void main() {
       when(() => mockStartMirroring(const StartMirroringParams(tDevice)))
           .thenAnswer((_) async => right(null));
       // assert later
-      const expected = [
-        MirroringStarting(tDevice),
+      const tExpected = [
         MirroringStarted(tDevice),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      expectLater(bloc.stream, emitsInOrder(tExpected));
       // act
       bloc.add(StartMirroringEvent(tDevice));
     });
@@ -60,11 +67,10 @@ void main() {
       when(() => mockStartMirroring(const StartMirroringParams(tDevice)))
           .thenAnswer((_) async => left(ExecutionFailure(message: 'error')));
       // assert later
-      const expected = [
-        MirroringStarting(tDevice),
+      const tExpected = [
         MirroringError(message: 'error'),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      expectLater(bloc.stream, emitsInOrder(tExpected));
       // act
       bloc.add(StartMirroringEvent(tDevice));
     });
@@ -76,11 +82,10 @@ void main() {
       when(() => mockStopMirroring(const StopMirroringParams(tDevice)))
           .thenAnswer((_) async => right(null));
       // assert later
-      const expected = [
-        MirroringStopping(tDevice),
+      const tExpected = [
         MirroringStopped(tDevice),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      expectLater(bloc.stream, emitsInOrder(tExpected));
       // act
       bloc.add(StopMirroringEvent(tDevice));
     });
@@ -90,13 +95,36 @@ void main() {
       when(() => mockStopMirroring(const StopMirroringParams(tDevice)))
           .thenAnswer((_) async => left(ExecutionFailure(message: 'error')));
       // assert later
-      const expected = [
-        MirroringStopping(tDevice),
+      const tExpected = [
         MirroringError(message: 'error'),
       ];
-      expectLater(bloc.stream, emitsInOrder(expected));
+      expectLater(bloc.stream, emitsInOrder(tExpected));
       // act
       bloc.add(StopMirroringEvent(tDevice));
+    });
+  });
+
+  group('GetMirroringStatusEvent', () {
+    test(
+        'should emit [UpdatingMirroringStatus] when get mirroring status success',
+        () {
+      // arrange
+      final tStatus = MirroringStatus(
+        serial: tDevice.adbSerial,
+        shellStatus: StreamShellStatus.stopped,
+        logs: [],
+      );
+      when(() => mockGetMirroringStatus(
+              GetMirroringStatusParams(serial: tDevice.adbSerial)))
+          .thenAnswer((_) async => right(tStatus));
+      // assert later
+      final tExpected = [
+        const UpdatingMirroringStatus(tDevice),
+        MirroringStatusUpdated(tStatus),
+      ];
+      expectLater(bloc.stream, emitsInOrder(tExpected));
+      // act
+      bloc.add(GetMirroringStatusEvent(tDevice));
     });
   });
 }

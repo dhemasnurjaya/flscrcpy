@@ -21,3 +21,12 @@ class StopMirroringEvent extends MirroringEvent {
   @override
   List<Object> get props => [device];
 }
+
+class GetMirroringStatusEvent extends MirroringEvent {
+  final DeviceInfo device;
+
+  const GetMirroringStatusEvent(this.device);
+
+  @override
+  List<Object> get props => [device];
+}

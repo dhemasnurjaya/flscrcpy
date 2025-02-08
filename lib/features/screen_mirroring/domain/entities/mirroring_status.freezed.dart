@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MirroringStatus {
   String get serial => throw _privateConstructorUsedError;
+  StreamShellStatus get shellStatus => throw _privateConstructorUsedError;
   List<String> get logs => throw _privateConstructorUsedError;
 
   /// Create a copy of MirroringStatus
@@ -32,7 +33,7 @@ abstract class $MirroringStatusCopyWith<$Res> {
           MirroringStatus value, $Res Function(MirroringStatus) then) =
       _$MirroringStatusCopyWithImpl<$Res, MirroringStatus>;
   @useResult
-  $Res call({String serial, List<String> logs});
+  $Res call({String serial, StreamShellStatus shellStatus, List<String> logs});
 }
 
 /// @nodoc
@@ -51,6 +52,7 @@ class _$MirroringStatusCopyWithImpl<$Res, $Val extends MirroringStatus>
   @override
   $Res call({
     Object? serial = null,
+    Object? shellStatus = null,
     Object? logs = null,
   }) {
     return _then(_value.copyWith(
@@ -58,6 +60,10 @@ class _$MirroringStatusCopyWithImpl<$Res, $Val extends MirroringStatus>
           ? _value.serial
           : serial // ignore: cast_nullable_to_non_nullable
               as String,
+      shellStatus: null == shellStatus
+          ? _value.shellStatus
+          : shellStatus // ignore: cast_nullable_to_non_nullable
+              as StreamShellStatus,
       logs: null == logs
           ? _value.logs
           : logs // ignore: cast_nullable_to_non_nullable
@@ -74,7 +80,7 @@ abstract class _$$MirroringStatusImplCopyWith<$Res>
       __$$MirroringStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String serial, List<String> logs});
+  $Res call({String serial, StreamShellStatus shellStatus, List<String> logs});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$MirroringStatusImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? serial = null,
+    Object? shellStatus = null,
     Object? logs = null,
   }) {
     return _then(_$MirroringStatusImpl(
@@ -98,6 +105,10 @@ class __$$MirroringStatusImplCopyWithImpl<$Res>
           ? _value.serial
           : serial // ignore: cast_nullable_to_non_nullable
               as String,
+      shellStatus: null == shellStatus
+          ? _value.shellStatus
+          : shellStatus // ignore: cast_nullable_to_non_nullable
+              as StreamShellStatus,
       logs: null == logs
           ? _value._logs
           : logs // ignore: cast_nullable_to_non_nullable
@@ -110,11 +121,15 @@ class __$$MirroringStatusImplCopyWithImpl<$Res>
 
 class _$MirroringStatusImpl implements _MirroringStatus {
   const _$MirroringStatusImpl(
-      {required this.serial, required final List<String> logs})
+      {required this.serial,
+      required this.shellStatus,
+      required final List<String> logs})
       : _logs = logs;
 
   @override
   final String serial;
+  @override
+  final StreamShellStatus shellStatus;
   final List<String> _logs;
   @override
   List<String> get logs {
@@ -125,7 +140,7 @@ class _$MirroringStatusImpl implements _MirroringStatus {
 
   @override
   String toString() {
-    return 'MirroringStatus(serial: $serial, logs: $logs)';
+    return 'MirroringStatus(serial: $serial, shellStatus: $shellStatus, logs: $logs)';
   }
 
   @override
@@ -134,12 +149,14 @@ class _$MirroringStatusImpl implements _MirroringStatus {
         (other.runtimeType == runtimeType &&
             other is _$MirroringStatusImpl &&
             (identical(other.serial, serial) || other.serial == serial) &&
+            (identical(other.shellStatus, shellStatus) ||
+                other.shellStatus == shellStatus) &&
             const DeepCollectionEquality().equals(other._logs, _logs));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, serial, const DeepCollectionEquality().hash(_logs));
+  int get hashCode => Object.hash(runtimeType, serial, shellStatus,
+      const DeepCollectionEquality().hash(_logs));
 
   /// Create a copy of MirroringStatus
   /// with the given fields replaced by the non-null parameter values.
@@ -154,10 +171,13 @@ class _$MirroringStatusImpl implements _MirroringStatus {
 abstract class _MirroringStatus implements MirroringStatus {
   const factory _MirroringStatus(
       {required final String serial,
+      required final StreamShellStatus shellStatus,
       required final List<String> logs}) = _$MirroringStatusImpl;
 
   @override
   String get serial;
+  @override
+  StreamShellStatus get shellStatus;
   @override
   List<String> get logs;
 

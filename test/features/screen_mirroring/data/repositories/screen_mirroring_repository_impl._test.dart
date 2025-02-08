@@ -203,14 +203,14 @@ void main() {
     test('should return the device state with the given serial', () async {
       // arrange
       final tModel = MirroringStatusModel(
-        shell: StreamShell(), // TODO: mock StreamShell
+        shell: StreamShellImpl(), // TODO: mock StreamShell
         serial: tSerial,
         logs: [],
       );
       when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
           .thenAnswer((_) async => tModel);
       // act
-      final result = await repository.getDeviceState(tSerial);
+      final result = await repository.getMirroringStatus(tSerial);
       // assert
       final tExpected = MirroringStatus.fromModel(tModel);
       result.fold(
@@ -225,7 +225,7 @@ void main() {
       when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
           .thenThrow(tException);
       // act
-      final result = await repository.getDeviceState(tSerial);
+      final result = await repository.getMirroringStatus(tSerial);
       // assert
       final tExpected = ExecutionFailure(message: tException.toString());
       result.fold(
@@ -239,7 +239,7 @@ void main() {
       when(() => mockScrcpyLocalDataSource.getDeviceStatus(tSerial))
           .thenAnswer((_) async => null);
       // act
-      final result = await repository.getDeviceState(tSerial);
+      final result = await repository.getMirroringStatus(tSerial);
       // assert
       final tExpected = ExecutionFailure(message: 'Device state not found');
       result.fold(
