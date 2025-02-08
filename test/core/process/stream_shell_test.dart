@@ -17,17 +17,17 @@ void main() {
       streamShell = StreamShellImpl(shell: mockShell);
     });
 
-    test('should run executes command and updates isRunning state', () async {
+    test('should run executes command and updates shell status', () async {
       // arrage
       when(() => mockShell.runExecutableArguments(any(), any()))
           .thenAnswer((_) async => ProcessResult(0, 0, '', ''));
-      expect(streamShell.isRunning, isFalse);
+      expect(streamShell.status, StreamShellStatus.stopped);
 
       // act
       await streamShell.run('echo', ['Hello']);
 
       // assert
-      expect(streamShell.isRunning, isFalse);
+      expect(streamShell.status, StreamShellStatus.stopped);
       verify(() => mockShell.runExecutableArguments('echo', ['Hello']))
           .called(1);
     });

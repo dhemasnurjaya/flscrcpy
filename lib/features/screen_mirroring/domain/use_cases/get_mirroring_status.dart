@@ -5,23 +5,23 @@ import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_sta
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetMirroringState
-    extends UseCase<MirroringStatus, GetMirroringStateParams> {
+class GetMirroringStatus
+    extends UseCase<MirroringStatus, GetMirroringStatusParams> {
   final ScreenMirroringRepository repository;
 
-  GetMirroringState(this.repository);
+  GetMirroringStatus(this.repository);
 
   @override
   Future<Either<Failure, MirroringStatus>> call(
-      GetMirroringStateParams params) {
-    return repository.getDeviceState(params.serial);
+      GetMirroringStatusParams params) {
+    return repository.getMirroringStatus(params.serial);
   }
 }
 
-class GetMirroringStateParams extends Equatable {
+class GetMirroringStatusParams extends Equatable {
   final String serial;
 
-  const GetMirroringStateParams({
+  const GetMirroringStatusParams({
     required this.serial,
   });
 

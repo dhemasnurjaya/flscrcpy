@@ -14,7 +14,7 @@ import 'package:flscrcpy/features/app_settings/presentation/app_settings_page.da
     as _i1;
 import 'package:flscrcpy/features/screen_mirroring/presentation/pages/dashboard_page.dart'
     as _i2;
-import 'package:flscrcpy/features/screen_mirroring/presentation/pages/mirroring_status_page.dart'
+import 'package:flscrcpy/features/screen_mirroring/presentation/pages/mirroring_device_log_page.dart'
     as _i3;
 import 'package:flutter/material.dart' as _i5;
 
@@ -51,38 +51,42 @@ class DashboardRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.MirroringStatusPage]
-class MirroringStatusRoute extends _i4.PageRouteInfo<MirroringStatusRouteArgs> {
-  MirroringStatusRoute({
-    required String serial,
+/// [_i3.MirroringDeviceLogPage]
+class MirroringDeviceLogRoute
+    extends _i4.PageRouteInfo<MirroringDeviceLogRouteArgs> {
+  MirroringDeviceLogRoute({
+    required List<String> mirroringLogs,
     _i5.Key? key,
     List<_i4.PageRouteInfo>? children,
   }) : super(
-          MirroringStatusRoute.name,
-          args: MirroringStatusRouteArgs(serial: serial, key: key),
+          MirroringDeviceLogRoute.name,
+          args: MirroringDeviceLogRouteArgs(
+            mirroringLogs: mirroringLogs,
+            key: key,
+          ),
           initialChildren: children,
         );
 
-  static const String name = 'MirroringStatusRoute';
+  static const String name = 'MirroringDeviceLogRoute';
 
   static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<MirroringStatusRouteArgs>();
-      return _i3.MirroringStatusPage(args.serial, key: args.key);
+      final args = data.argsAs<MirroringDeviceLogRouteArgs>();
+      return _i3.MirroringDeviceLogPage(args.mirroringLogs, key: args.key);
     },
   );
 }
 
-class MirroringStatusRouteArgs {
-  const MirroringStatusRouteArgs({required this.serial, this.key});
+class MirroringDeviceLogRouteArgs {
+  const MirroringDeviceLogRouteArgs({required this.mirroringLogs, this.key});
 
-  final String serial;
+  final List<String> mirroringLogs;
 
   final _i5.Key? key;
 
   @override
   String toString() {
-    return 'MirroringStatusRouteArgs{serial: $serial, key: $key}';
+    return 'MirroringDeviceLogRouteArgs{mirroringLogs: $mirroringLogs, key: $key}';
   }
 }

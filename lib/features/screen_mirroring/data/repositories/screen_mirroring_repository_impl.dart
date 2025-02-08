@@ -65,7 +65,8 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
   }
 
   @override
-  Future<Either<Failure, MirroringStatus>> getDeviceState(String serial) async {
+  Future<Either<Failure, MirroringStatus>> getMirroringStatus(
+      String serial) async {
     try {
       final state = await scrcpyLocalDataSource.getDeviceStatus(serial);
       if (state == null) {

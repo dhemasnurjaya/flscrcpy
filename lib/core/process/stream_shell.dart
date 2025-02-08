@@ -1,7 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:process_run/process_run.dart';
+
+enum StreamShellStatus { stopped, running, error }
 
 /// A shell that can be used to run commands and listen to the output.
 abstract class StreamShell {
@@ -9,7 +10,7 @@ abstract class StreamShell {
   ShellLinesController get controller;
 
   /// Whether the shell is running.
-  bool get isRunning;
+  StreamShellStatus get status;
 
   /// Run the given command with the given arguments.
   Future<void> run(String command, List<String> arguments);
@@ -19,7 +20,7 @@ abstract class StreamShell {
 }
 
 class StreamShellImpl extends StreamShell {
-  bool _isRunning = false;
+  StreamShellStatus _status = StreamShellStatus.stopped;
 
   late Shell _shell;
   late ShellLinesController _controller;
@@ -37,12 +38,12 @@ class StreamShellImpl extends StreamShell {
   ShellLinesController get controller => _controller;
 
   @override
-  bool get isRunning => _isRunning;
+  StreamShellStatus get status => _status;
 
   @override
   Future<void> run(String command, List<String> arguments) async {
     try {
-      _isRunning = true;
+      _status = StreamShellStatus.running;
       await _shell.runExecutableArguments(command, arguments);
     } on Exception catch (e) {
       final isKilledOnPurpose =
@@ -50,9 +51,9 @@ class StreamShellImpl extends StreamShell {
       if (!isKilledOnPurpose) {
         throw Exception('Failed while executing: $e');
       }
+      _status = StreamShellStatus.error;
     } finally {
-      _isRunning = false;
-      log('Shell is closed');
+      _status = StreamShellStatus.stopped;
     }
   }
 

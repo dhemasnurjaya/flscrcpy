@@ -8,14 +8,13 @@ import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
-import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_state.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_status.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/list_connected_devices.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/executable_info/executable_info_bloc.dart';
-import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirorring_status/mirroring_status_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,8 +81,8 @@ void setup() {
   getIt.registerLazySingleton<StopMirroring>(
     () => StopMirroring(getIt()),
   );
-  getIt.registerLazySingleton<GetMirroringState>(
-    () => GetMirroringState(getIt()),
+  getIt.registerLazySingleton<GetMirroringStatus>(
+    () => GetMirroringStatus(getIt()),
   );
 
   // blocs
@@ -111,10 +110,6 @@ void setup() {
     () => MirroringBloc(
       startMirroring: getIt(),
       stopMirroring: getIt(),
-    ),
-  );
-  getIt.registerFactory<MirroringStatusBloc>(
-    () => MirroringStatusBloc(
       getMirroringState: getIt(),
     ),
   );
@@ -139,9 +134,6 @@ List<BlocProvider> get blocProviders => [
         create: (context) => getIt(),
       ),
       BlocProvider<MirroringBloc>(
-        create: (context) => getIt(),
-      ),
-      BlocProvider<MirroringStatusBloc>(
         create: (context) => getIt(),
       ),
     ];

@@ -17,6 +17,6 @@ abstract class ScreenMirroringRepository {
   /// Stop screen mirroring.
   Future<Either<Failure, void>> stopMirroring(String serial);
 
-  /// Get the device mirroring state with the given serial.
-  Future<Either<Failure, MirroringStatus>> getDeviceState(String serial);
+  /// Get the device mirroring status with the given serial.
+  Future<Either<Failure, MirroringStatus>> getMirroringStatus(String serial);
 }
