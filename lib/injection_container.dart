@@ -11,6 +11,7 @@ import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_s
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_status.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/list_connected_devices.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
@@ -18,6 +19,7 @@ import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirrori
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/executable_info/executable_info_bloc.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring/mirroring_bloc.dart';
+import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/mirroring_args/mirroring_args_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -91,6 +93,9 @@ void setup() {
   getIt.registerLazySingleton<GetMirroringStatus>(
     () => GetMirroringStatus(getIt()),
   );
+  getIt.registerLazySingleton<GetScrcpyArgs>(
+    () => GetScrcpyArgs(getIt()),
+  );
 
   // blocs
   getIt.registerSingletonAsync<ThemeModeCubit>(
@@ -120,6 +125,11 @@ void setup() {
       getMirroringState: getIt(),
     ),
   );
+  getIt.registerFactory<MirroringArgsBloc>(
+    () => MirroringArgsBloc(
+      getScrcpyArgs: getIt(),
+    ),
+  );
 
   // caches
   getIt.registerLazySingleton<Cache<String, MirroringStatusModel>>(
@@ -141,6 +151,9 @@ List<BlocProvider> get blocProviders => [
         create: (context) => getIt(),
       ),
       BlocProvider<MirroringBloc>(
+        create: (context) => getIt(),
+      ),
+      BlocProvider<MirroringArgsBloc>(
         create: (context) => getIt(),
       ),
     ];
