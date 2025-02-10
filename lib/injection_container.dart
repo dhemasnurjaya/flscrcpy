@@ -5,8 +5,10 @@ import 'package:flscrcpy/core/env.dart';
 import 'package:flscrcpy/core/network/network.dart';
 import 'package:flscrcpy/core/presentation/theme/theme_mode_cubit.dart';
 import 'package:flscrcpy/core/process/exec_command.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/configs/scrcpy_config.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirroring_status.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
@@ -48,6 +50,10 @@ void setup() {
     () => ThemeModeConfig(sharedPreferences: getIt()),
     dependsOn: [SharedPreferences],
   );
+  getIt.registerSingletonWithDependencies<Config<ScrcpyArgsModel>>(
+    () => ScrcpyConfig(sharedPreferences: getIt()),
+    dependsOn: [SharedPreferences],
+  );
 
   // data sources
   getIt.registerLazySingleton<ScrcpyLocalDataSource>(
@@ -65,6 +71,7 @@ void setup() {
     () => ScreenMirroringRepositoryImpl(
       adbLocalDataSource: getIt(),
       scrcpyLocalDataSource: getIt(),
+      scrcpyArgsConfig: getIt(),
     ),
   );
 
