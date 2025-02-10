@@ -1,6 +1,7 @@
 import 'package:flscrcpy/core/error/failures.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_info.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -19,4 +20,7 @@ abstract class ScreenMirroringRepository {
 
   /// Get the device mirroring status with the given serial.
   Future<Either<Failure, MirroringStatus>> getMirroringStatus(String serial);
+
+  /// Get scrcpy parameters configuration.
+  Future<Either<Failure, ScrcpyArgs>> getScrcpyArgs();
 }

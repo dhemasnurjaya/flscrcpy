@@ -22,7 +22,7 @@ import 'package:flutter/material.dart' as _i5;
 /// [_i1.AppSettingsPage]
 class AppSettingsRoute extends _i4.PageRouteInfo<void> {
   const AppSettingsRoute({List<_i4.PageRouteInfo>? children})
-      : super(AppSettingsRoute.name, initialChildren: children);
+    : super(AppSettingsRoute.name, initialChildren: children);
 
   static const String name = 'AppSettingsRoute';
 
@@ -38,7 +38,7 @@ class AppSettingsRoute extends _i4.PageRouteInfo<void> {
 /// [_i2.DashboardPage]
 class DashboardRoute extends _i4.PageRouteInfo<void> {
   const DashboardRoute({List<_i4.PageRouteInfo>? children})
-      : super(DashboardRoute.name, initialChildren: children);
+    : super(DashboardRoute.name, initialChildren: children);
 
   static const String name = 'DashboardRoute';
 
@@ -59,13 +59,13 @@ class MirroringDeviceLogRoute
     _i5.Key? key,
     List<_i4.PageRouteInfo>? children,
   }) : super(
-          MirroringDeviceLogRoute.name,
-          args: MirroringDeviceLogRouteArgs(
-            mirroringLogs: mirroringLogs,
-            key: key,
-          ),
-          initialChildren: children,
-        );
+         MirroringDeviceLogRoute.name,
+         args: MirroringDeviceLogRouteArgs(
+           mirroringLogs: mirroringLogs,
+           key: key,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'MirroringDeviceLogRoute';
 

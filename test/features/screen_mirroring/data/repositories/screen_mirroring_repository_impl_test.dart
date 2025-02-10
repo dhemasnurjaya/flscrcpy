@@ -1,15 +1,16 @@
 import 'package:flscrcpy/core/data/local/config.dart';
 import 'package:flscrcpy/core/error/failures.dart';
 import 'package:flscrcpy/core/process/stream_shell.dart';
-import 'package:flscrcpy/features/screen_mirroring/data/local/configs/scrcpy_config.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/adb_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_info_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_info_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/repositories/screen_mirroring_repository_impl.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,22 +21,22 @@ class MockAdbLocalDataSource extends Mock implements AdbLocalDataSource {}
 
 class MockScrcpyLocalDataSource extends Mock implements ScrcpyLocalDataSource {}
 
-class MockScrcpyParamsConfig extends Mock implements Config<ScrcpyParams> {}
+class MockScrcpyArgsConfig extends Mock implements Config<ScrcpyArgsModel> {}
 
 void main() {
   late MockAdbLocalDataSource mockAdbLocalDataSource;
   late MockScrcpyLocalDataSource mockScrcpyLocalDataSource;
-  late MockScrcpyParamsConfig mockScrcpyParamsConfig;
+  late MockScrcpyArgsConfig mockScrcpyParamsConfig;
   late ScreenMirroringRepositoryImpl repository;
 
   setUp(() {
     mockAdbLocalDataSource = MockAdbLocalDataSource();
     mockScrcpyLocalDataSource = MockScrcpyLocalDataSource();
-    mockScrcpyParamsConfig = MockScrcpyParamsConfig();
+    mockScrcpyParamsConfig = MockScrcpyArgsConfig();
     repository = ScreenMirroringRepositoryImpl(
       adbLocalDataSource: mockAdbLocalDataSource,
       scrcpyLocalDataSource: mockScrcpyLocalDataSource,
-      scrcpyParamsConfig: mockScrcpyParamsConfig,
+      scrcpyArgsConfig: mockScrcpyParamsConfig,
     );
   });
 
@@ -144,9 +145,9 @@ void main() {
 
   group('startMirroring', () {
     const tSerial = 'serial';
-    final tConfig = ScrcpyParams.defaults();
+    final tConfig = ScrcpyArgsModel.defaults();
     final tParams =
-        tConfig.params.map((e) => "${e.paramName} ${e.paramValue}").toList();
+        tConfig.list.map((e) => "${e.paramName} ${e.paramValue}").toList();
 
     test('should start mirroring with the given serial', () async {
       // arrange
@@ -252,6 +253,33 @@ void main() {
       final result = await repository.getMirroringStatus(tSerial);
       // assert
       final tExpected = ExecutionFailure(message: 'Device state not found');
+      result.fold(
+        (l) => expect(l, equals(tExpected)),
+        (r) => fail('should return a ExecutionFailure'),
+      );
+    });
+  });
+
+  group('getScrcpyParams', () {
+    test('should return scrcpy params from the local data source', () async {
+      // arrange
+      final tConfig = ScrcpyArgsModel.defaults();
+      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      // act
+      final result = await repository.getScrcpyArgs();
+      // assert
+      final tExpected = ScrcpyArgs.fromModel(tConfig);
+      expect(result, right(tExpected));
+    });
+
+    test('should return a ExecutionFailure when an exception occurs', () async {
+      // arrange
+      final tException = Exception('error');
+      when(() => mockScrcpyParamsConfig.get()).thenThrow(tException);
+      // act
+      final result = await repository.getScrcpyArgs();
+      // assert
+      final tExpected = ExecutionFailure(message: tException.toString());
       result.fold(
         (l) => expect(l, equals(tExpected)),
         (r) => fail('should return a ExecutionFailure'),
