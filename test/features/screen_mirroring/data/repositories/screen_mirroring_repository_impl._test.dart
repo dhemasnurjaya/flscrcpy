@@ -1,11 +1,12 @@
+import 'package:flscrcpy/core/data/local/config.dart';
 import 'package:flscrcpy/core/error/failures.dart';
 import 'package:flscrcpy/core/process/stream_shell.dart';
+import 'package:flscrcpy/features/screen_mirroring/data/local/configs/scrcpy_config.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/adb_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/data_sources/scrcpy_local_data_source.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/device_info_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_info_model.dart';
-import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_run_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/repositories/screen_mirroring_repository_impl.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/device_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/mirroring_status.dart';
@@ -19,17 +20,22 @@ class MockAdbLocalDataSource extends Mock implements AdbLocalDataSource {}
 
 class MockScrcpyLocalDataSource extends Mock implements ScrcpyLocalDataSource {}
 
+class MockScrcpyParamsConfig extends Mock implements Config<ScrcpyParams> {}
+
 void main() {
   late MockAdbLocalDataSource mockAdbLocalDataSource;
   late MockScrcpyLocalDataSource mockScrcpyLocalDataSource;
+  late MockScrcpyParamsConfig mockScrcpyParamsConfig;
   late ScreenMirroringRepositoryImpl repository;
 
   setUp(() {
     mockAdbLocalDataSource = MockAdbLocalDataSource();
     mockScrcpyLocalDataSource = MockScrcpyLocalDataSource();
+    mockScrcpyParamsConfig = MockScrcpyParamsConfig();
     repository = ScreenMirroringRepositoryImpl(
       adbLocalDataSource: mockAdbLocalDataSource,
       scrcpyLocalDataSource: mockScrcpyLocalDataSource,
+      scrcpyParamsConfig: mockScrcpyParamsConfig,
     );
   });
 
@@ -138,23 +144,27 @@ void main() {
 
   group('startMirroring', () {
     const tSerial = 'serial';
-    const tArgs = ScrcpyRunArgsModel(serial: tSerial, videoBitrate: 4000000);
+    final tConfig = ScrcpyParams.defaults();
+    final tParams =
+        tConfig.params.map((e) => "${e.paramName} ${e.paramValue}").toList();
 
     test('should start mirroring with the given serial', () async {
       // arrange
-      when(() => mockScrcpyLocalDataSource.startScrcpy(tArgs))
+      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      when(() => mockScrcpyLocalDataSource.startScrcpy(tSerial, tParams))
           .thenAnswer((_) async {});
       // act
       final result = await repository.startMirroring(tSerial);
       // assert
       expect(result, right(null));
-      verify(() => mockScrcpyLocalDataSource.startScrcpy(tArgs));
+      verify(() => mockScrcpyLocalDataSource.startScrcpy(tSerial, tParams));
     });
 
     test('should return a ExecutionFailure when an exception occurs', () async {
       // arrange
       final tException = Exception('error');
-      when(() => mockScrcpyLocalDataSource.startScrcpy(tArgs))
+      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      when(() => mockScrcpyLocalDataSource.startScrcpy(tSerial, tParams))
           .thenThrow(tException);
       // act
       final result = await repository.startMirroring(tSerial);

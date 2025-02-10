@@ -4,14 +4,13 @@ import 'package:flscrcpy/core/data/local/cache.dart';
 import 'package:flscrcpy/core/process/exec_command.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/mirroring_status_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_info_model.dart';
-import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_run_args_model.dart';
 
 abstract class ScrcpyLocalDataSource {
   /// Get information about the scrcpy binary.
   Future<ScrcpyInfoModel> getScrcpyInfo();
 
-  /// Start scrcpy with the given arguments.
-  Future<void> startScrcpy(ScrcpyRunArgsModel args);
+  /// Start scrcpy with the given serial and arguments.
+  Future<void> startScrcpy(String serial, List<String> args);
 
   /// Stop scrcpy with the given serial.
   Future<void> stopScrcpy(String serial);
@@ -36,17 +35,17 @@ class ScrcpyLocalDataSourceImpl implements ScrcpyLocalDataSource {
   }
 
   @override
-  Future<void> startScrcpy(ScrcpyRunArgsModel args) async {
-    final shell = await execCommand.stream('scrcpy', args.list);
+  Future<void> startScrcpy(String serial, List<String> args) async {
+    final shell = await execCommand.stream('scrcpy', args);
     final state = MirroringStatusModel(
       shell: shell,
-      serial: args.serial,
+      serial: serial,
       logs: [],
     );
     shell.controller.stream.listen(
       (output) {
         state.logs.add(output);
-        mirroringStatusCache.add(args.serial, state);
+        mirroringStatusCache.add(serial, state);
       },
       onDone: () {
         shell.controller.close();
