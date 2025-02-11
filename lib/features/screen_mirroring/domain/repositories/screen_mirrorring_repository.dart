@@ -23,4 +23,7 @@ abstract class ScreenMirroringRepository {
 
   /// Get scrcpy parameters configuration.
   Future<Either<Failure, ScrcpyArgs>> getScrcpyArgs();
+
+  /// Set scrcpy parameters configuration.
+  Future<Either<Failure, void>> setScrcpyArgs(ScrcpyArgs args);
 }

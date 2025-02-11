@@ -63,7 +63,6 @@ class ScrcpyLocalDataSourceImpl implements ScrcpyLocalDataSource {
       state.shell.kill();
       await mirroringStatusCache.remove(serial);
     }
-    return Future.value();
   }
 
   @override
