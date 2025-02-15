@@ -22,8 +22,8 @@ class ScrcpyConfig extends Config<ScrcpyArgsModel> {
   }
 
   @override
-  Future<void> set(ScrcpyArgsModel value) {
-    return sharedPreferences.setString(
+  Future<void> set(ScrcpyArgsModel value) async {
+    await sharedPreferences.setString(
       scrcpyParamsConfigKey,
       jsonEncode(value.toJson()),
     );

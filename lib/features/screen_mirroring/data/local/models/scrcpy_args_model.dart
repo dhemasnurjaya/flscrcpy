@@ -1,5 +1,7 @@
+import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_args.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'scrcpy_args_model.freezed.dart';
 part 'scrcpy_args_model.g.dart';
 
 enum ScrcpyArgTypes {
@@ -8,47 +10,55 @@ enum ScrcpyArgTypes {
   boolean,
 }
 
-@JsonSerializable()
-class ScrcpyArgModel {
-  final String name;
-  final String description;
-  final String paramName;
-  final String paramValue;
-  final ScrcpyArgTypes type;
+enum ScrcpyArgNames {
+  turnScreenOff,
+  stayAwake,
+  showTouches,
+  maxSize,
+  maxFps,
+  videoBitrate,
+  audioBitrate,
+}
 
-  const ScrcpyArgModel({
-    required this.name,
-    required this.description,
-    required this.paramName,
-    required this.paramValue,
-    required this.type,
-  });
+@freezed
+class ScrcpyArgModel with _$ScrcpyArgModel {
+  @JsonSerializable()
+  const factory ScrcpyArgModel({
+    required String name,
+    required String description,
+    required String paramName,
+    required String paramValue,
+    required ScrcpyArgTypes type,
+  }) = _ScrcpyArgModel;
+
+  factory ScrcpyArgModel.fromEntity(ScrcpyArg entity) {
+    return ScrcpyArgModel(
+      name: entity.name,
+      description: entity.description,
+      paramName: entity.paramName,
+      paramValue: entity.paramValue,
+      type: entity.type,
+    );
+  }
 
   factory ScrcpyArgModel.fromJson(Map<String, dynamic> json) =>
       _$ScrcpyArgModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ScrcpyArgModelToJson(this);
 }
 
-@JsonSerializable()
-class ScrcpyArgsModel {
-  final ScrcpyArgModel turnScreenOff;
-  final ScrcpyArgModel stayAwake;
-  final ScrcpyArgModel showTouches;
-  final ScrcpyArgModel maxSize;
-  final ScrcpyArgModel maxFps;
-  final ScrcpyArgModel videoBitrate;
-  final ScrcpyArgModel audioBitrate;
+@freezed
+class ScrcpyArgsModel with _$ScrcpyArgsModel {
+  const ScrcpyArgsModel._();
 
-  const ScrcpyArgsModel({
-    required this.turnScreenOff,
-    required this.stayAwake,
-    required this.showTouches,
-    required this.maxSize,
-    required this.maxFps,
-    required this.videoBitrate,
-    required this.audioBitrate,
-  });
+  @JsonSerializable()
+  const factory ScrcpyArgsModel({
+    required ScrcpyArgModel turnScreenOff,
+    required ScrcpyArgModel stayAwake,
+    required ScrcpyArgModel showTouches,
+    required ScrcpyArgModel maxSize,
+    required ScrcpyArgModel maxFps,
+    required ScrcpyArgModel videoBitrate,
+    required ScrcpyArgModel audioBitrate,
+  }) = _ScrcpyArgsModel;
 
   factory ScrcpyArgsModel.defaults() {
     return ScrcpyArgsModel(
@@ -110,6 +120,26 @@ class ScrcpyArgsModel {
     );
   }
 
+  factory ScrcpyArgsModel.fromEntity(ScrcpyArgs entity) {
+    return ScrcpyArgsModel(
+      turnScreenOff:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.turnScreenOff]!),
+      stayAwake:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.stayAwake]!),
+      showTouches:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.showTouches]!),
+      maxSize: ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.maxSize]!),
+      maxFps: ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.maxFps]!),
+      videoBitrate:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.videoBitrate]!),
+      audioBitrate:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.audioBitrate]!),
+    );
+  }
+
+  factory ScrcpyArgsModel.fromJson(Map<String, dynamic> json) =>
+      _$ScrcpyArgsModelFromJson(json);
+
   List<ScrcpyArgModel> get list => [
         turnScreenOff,
         stayAwake,
@@ -119,9 +149,4 @@ class ScrcpyArgsModel {
         videoBitrate,
         audioBitrate,
       ];
-
-  factory ScrcpyArgsModel.fromJson(Map<String, dynamic> json) =>
-      _$ScrcpyArgsModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ScrcpyArgsModelToJson(this);
 }

@@ -93,4 +93,15 @@ class ScreenMirroringRepositoryImpl implements ScreenMirroringRepository {
       return left(ExecutionFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> setScrcpyArgs(ScrcpyArgs args) async {
+    try {
+      final config = ScrcpyArgsModel.fromEntity(args);
+      await scrcpyArgsConfig.set(config);
+      return right(null);
+    } on Exception catch (e) {
+      return left(ExecutionFailure(message: e.toString()));
+    }
+  }
 }

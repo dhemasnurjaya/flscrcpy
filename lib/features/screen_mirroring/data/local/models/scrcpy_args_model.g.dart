@@ -6,8 +6,8 @@ part of 'scrcpy_args_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ScrcpyArgModel _$ScrcpyArgModelFromJson(Map<String, dynamic> json) =>
-    ScrcpyArgModel(
+_$ScrcpyArgModelImpl _$$ScrcpyArgModelImplFromJson(Map<String, dynamic> json) =>
+    _$ScrcpyArgModelImpl(
       name: json['name'] as String,
       description: json['description'] as String,
       paramName: json['paramName'] as String,
@@ -15,7 +15,8 @@ ScrcpyArgModel _$ScrcpyArgModelFromJson(Map<String, dynamic> json) =>
       type: $enumDecode(_$ScrcpyArgTypesEnumMap, json['type']),
     );
 
-Map<String, dynamic> _$ScrcpyArgModelToJson(ScrcpyArgModel instance) =>
+Map<String, dynamic> _$$ScrcpyArgModelImplToJson(
+        _$ScrcpyArgModelImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
@@ -30,8 +31,9 @@ const _$ScrcpyArgTypesEnumMap = {
   ScrcpyArgTypes.boolean: 'boolean',
 };
 
-ScrcpyArgsModel _$ScrcpyArgsModelFromJson(Map<String, dynamic> json) =>
-    ScrcpyArgsModel(
+_$ScrcpyArgsModelImpl _$$ScrcpyArgsModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ScrcpyArgsModelImpl(
       turnScreenOff: ScrcpyArgModel.fromJson(
           json['turnScreenOff'] as Map<String, dynamic>),
       stayAwake:
@@ -46,7 +48,8 @@ ScrcpyArgsModel _$ScrcpyArgsModelFromJson(Map<String, dynamic> json) =>
           ScrcpyArgModel.fromJson(json['audioBitrate'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$ScrcpyArgsModelToJson(ScrcpyArgsModel instance) =>
+Map<String, dynamic> _$$ScrcpyArgsModelImplToJson(
+        _$ScrcpyArgsModelImpl instance) =>
     <String, dynamic>{
       'turnScreenOff': instance.turnScreenOff,
       'stayAwake': instance.stayAwake,

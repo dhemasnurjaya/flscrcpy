@@ -5,15 +5,13 @@ import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_args.d
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetScrcpyParamsConfig extends UseCase<ScrcpyArgs, NoParams> {
-  final ScreenMirroringRepository screenMirroringRepository;
+class GetScrcpyArgs extends UseCase<ScrcpyArgs, NoParams> {
+  final ScreenMirroringRepository repository;
 
-  GetScrcpyParamsConfig({
-    required this.screenMirroringRepository,
-  });
+  GetScrcpyArgs(this.repository);
 
   @override
   Future<Either<Failure, ScrcpyArgs>> call(NoParams params) {
-    return screenMirroringRepository.getScrcpyArgs();
+    return repository.getScrcpyArgs();
   }
 }

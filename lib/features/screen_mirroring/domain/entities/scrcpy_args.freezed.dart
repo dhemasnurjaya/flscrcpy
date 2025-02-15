@@ -231,7 +231,7 @@ abstract class _ScrcpyArg implements ScrcpyArg {
 
 /// @nodoc
 mixin _$ScrcpyArgs {
-  List<ScrcpyArg> get args => throw _privateConstructorUsedError;
+  Map<ScrcpyArgNames, ScrcpyArg> get args => throw _privateConstructorUsedError;
 
   /// Create a copy of ScrcpyArgs
   /// with the given fields replaced by the non-null parameter values.
@@ -246,7 +246,7 @@ abstract class $ScrcpyArgsCopyWith<$Res> {
           ScrcpyArgs value, $Res Function(ScrcpyArgs) then) =
       _$ScrcpyArgsCopyWithImpl<$Res, ScrcpyArgs>;
   @useResult
-  $Res call({List<ScrcpyArg> args});
+  $Res call({Map<ScrcpyArgNames, ScrcpyArg> args});
 }
 
 /// @nodoc
@@ -270,7 +270,7 @@ class _$ScrcpyArgsCopyWithImpl<$Res, $Val extends ScrcpyArgs>
       args: null == args
           ? _value.args
           : args // ignore: cast_nullable_to_non_nullable
-              as List<ScrcpyArg>,
+              as Map<ScrcpyArgNames, ScrcpyArg>,
     ) as $Val);
   }
 }
@@ -283,7 +283,7 @@ abstract class _$$ScrcpyArgsImplCopyWith<$Res>
       __$$ScrcpyArgsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ScrcpyArg> args});
+  $Res call({Map<ScrcpyArgNames, ScrcpyArg> args});
 }
 
 /// @nodoc
@@ -305,27 +305,24 @@ class __$$ScrcpyArgsImplCopyWithImpl<$Res>
       args: null == args
           ? _value._args
           : args // ignore: cast_nullable_to_non_nullable
-              as List<ScrcpyArg>,
+              as Map<ScrcpyArgNames, ScrcpyArg>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ScrcpyArgsImpl implements _ScrcpyArgs {
-  const _$ScrcpyArgsImpl({required final List<ScrcpyArg> args}) : _args = args;
+class _$ScrcpyArgsImpl extends _ScrcpyArgs {
+  const _$ScrcpyArgsImpl({required final Map<ScrcpyArgNames, ScrcpyArg> args})
+      : _args = args,
+        super._();
 
-  final List<ScrcpyArg> _args;
+  final Map<ScrcpyArgNames, ScrcpyArg> _args;
   @override
-  List<ScrcpyArg> get args {
-    if (_args is EqualUnmodifiableListView) return _args;
+  Map<ScrcpyArgNames, ScrcpyArg> get args {
+    if (_args is EqualUnmodifiableMapView) return _args;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_args);
-  }
-
-  @override
-  String toString() {
-    return 'ScrcpyArgs(args: $args)';
+    return EqualUnmodifiableMapView(_args);
   }
 
   @override
@@ -349,12 +346,13 @@ class _$ScrcpyArgsImpl implements _ScrcpyArgs {
       __$$ScrcpyArgsImplCopyWithImpl<_$ScrcpyArgsImpl>(this, _$identity);
 }
 
-abstract class _ScrcpyArgs implements ScrcpyArgs {
-  const factory _ScrcpyArgs({required final List<ScrcpyArg> args}) =
-      _$ScrcpyArgsImpl;
+abstract class _ScrcpyArgs extends ScrcpyArgs {
+  const factory _ScrcpyArgs(
+      {required final Map<ScrcpyArgNames, ScrcpyArg> args}) = _$ScrcpyArgsImpl;
+  const _ScrcpyArgs._() : super._();
 
   @override
-  List<ScrcpyArg> get args;
+  Map<ScrcpyArgNames, ScrcpyArg> get args;
 
   /// Create a copy of ScrcpyArgs
   /// with the given fields replaced by the non-null parameter values.

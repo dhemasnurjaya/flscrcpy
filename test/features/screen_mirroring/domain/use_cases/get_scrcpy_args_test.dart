@@ -2,7 +2,7 @@ import 'package:flscrcpy/core/domain/no_params.dart';
 import 'package:flscrcpy/features/screen_mirroring/data/local/models/scrcpy_args_model.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/entities/scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/repositories/screen_mirrorring_repository.dart';
-import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_params_config.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_args.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,12 +12,11 @@ class MockScreenMirroringRepository extends Mock
 
 void main() {
   late MockScreenMirroringRepository mockScreenMirroringRepository;
-  late GetScrcpyParamsConfig usecase;
+  late GetScrcpyArgs usecase;
 
   setUp(() {
     mockScreenMirroringRepository = MockScreenMirroringRepository();
-    usecase = GetScrcpyParamsConfig(
-        screenMirroringRepository: mockScreenMirroringRepository);
+    usecase = GetScrcpyArgs(mockScreenMirroringRepository);
   });
 
   test('should get scrcpy params config from the repository', () async {

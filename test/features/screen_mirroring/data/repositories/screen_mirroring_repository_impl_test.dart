@@ -26,17 +26,17 @@ class MockScrcpyArgsConfig extends Mock implements Config<ScrcpyArgsModel> {}
 void main() {
   late MockAdbLocalDataSource mockAdbLocalDataSource;
   late MockScrcpyLocalDataSource mockScrcpyLocalDataSource;
-  late MockScrcpyArgsConfig mockScrcpyParamsConfig;
+  late MockScrcpyArgsConfig mockScrcpyArgsConfig;
   late ScreenMirroringRepositoryImpl repository;
 
   setUp(() {
     mockAdbLocalDataSource = MockAdbLocalDataSource();
     mockScrcpyLocalDataSource = MockScrcpyLocalDataSource();
-    mockScrcpyParamsConfig = MockScrcpyArgsConfig();
+    mockScrcpyArgsConfig = MockScrcpyArgsConfig();
     repository = ScreenMirroringRepositoryImpl(
       adbLocalDataSource: mockAdbLocalDataSource,
       scrcpyLocalDataSource: mockScrcpyLocalDataSource,
-      scrcpyArgsConfig: mockScrcpyParamsConfig,
+      scrcpyArgsConfig: mockScrcpyArgsConfig,
     );
   });
 
@@ -151,7 +151,7 @@ void main() {
 
     test('should start mirroring with the given serial', () async {
       // arrange
-      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      when(() => mockScrcpyArgsConfig.get()).thenAnswer((_) async => tConfig);
       when(() => mockScrcpyLocalDataSource.startScrcpy(tSerial, tParams))
           .thenAnswer((_) async {});
       // act
@@ -164,7 +164,7 @@ void main() {
     test('should return a ExecutionFailure when an exception occurs', () async {
       // arrange
       final tException = Exception('error');
-      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      when(() => mockScrcpyArgsConfig.get()).thenAnswer((_) async => tConfig);
       when(() => mockScrcpyLocalDataSource.startScrcpy(tSerial, tParams))
           .thenThrow(tException);
       // act
@@ -264,7 +264,7 @@ void main() {
     test('should return scrcpy params from the local data source', () async {
       // arrange
       final tConfig = ScrcpyArgsModel.defaults();
-      when(() => mockScrcpyParamsConfig.get()).thenAnswer((_) async => tConfig);
+      when(() => mockScrcpyArgsConfig.get()).thenAnswer((_) async => tConfig);
       // act
       final result = await repository.getScrcpyArgs();
       // assert
@@ -275,9 +275,39 @@ void main() {
     test('should return a ExecutionFailure when an exception occurs', () async {
       // arrange
       final tException = Exception('error');
-      when(() => mockScrcpyParamsConfig.get()).thenThrow(tException);
+      when(() => mockScrcpyArgsConfig.get()).thenThrow(tException);
       // act
       final result = await repository.getScrcpyArgs();
+      // assert
+      final tExpected = ExecutionFailure(message: tException.toString());
+      result.fold(
+        (l) => expect(l, equals(tExpected)),
+        (r) => fail('should return a ExecutionFailure'),
+      );
+    });
+  });
+
+  group('setScrcpyParams', () {
+    final tArgsModel = ScrcpyArgsModel.defaults();
+    final tArgs = ScrcpyArgs.fromModel(tArgsModel);
+
+    test('should set scrcpy params to the local config', () async {
+      // arrange
+      when(() => mockScrcpyArgsConfig.set(tArgsModel))
+          .thenAnswer((_) async => Future.value());
+      // act
+      final result = await repository.setScrcpyArgs(tArgs);
+      // assert
+      expect(result, right(null));
+      verify(() => mockScrcpyArgsConfig.set(tArgsModel));
+    });
+
+    test('should return a ExecutionFailure when an exception occurs', () async {
+      // arrange
+      final tException = Exception('error');
+      when(() => mockScrcpyArgsConfig.set(tArgsModel)).thenThrow(tException);
+      // act
+      final result = await repository.setScrcpyArgs(tArgs);
       // assert
       final tExpected = ExecutionFailure(message: tException.toString());
       result.fold(

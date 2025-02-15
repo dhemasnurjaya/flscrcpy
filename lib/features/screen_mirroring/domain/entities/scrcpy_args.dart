@@ -12,25 +12,44 @@ class ScrcpyArg with _$ScrcpyArg {
     required String paramValue,
     required ScrcpyArgTypes type,
   }) = _ScrcpyArg;
+
+  factory ScrcpyArg.fromModel(ScrcpyArgModel model) {
+    return ScrcpyArg(
+      name: model.name,
+      description: model.description,
+      paramName: model.paramName,
+      paramValue: model.paramValue,
+      type: model.type,
+    );
+  }
 }
 
 @freezed
 class ScrcpyArgs with _$ScrcpyArgs {
+  const ScrcpyArgs._();
+
   const factory ScrcpyArgs({
-    required List<ScrcpyArg> args,
+    required Map<ScrcpyArgNames, ScrcpyArg> args,
   }) = _ScrcpyArgs;
 
   factory ScrcpyArgs.fromModel(ScrcpyArgsModel model) {
     return ScrcpyArgs(
-      args: model.list
-          .map((e) => ScrcpyArg(
-                name: e.name,
-                description: e.description,
-                paramName: e.paramName,
-                paramValue: e.paramValue,
-                type: e.type,
-              ))
-          .toList(),
+      args: {
+        ScrcpyArgNames.turnScreenOff: ScrcpyArg.fromModel(model.turnScreenOff),
+        ScrcpyArgNames.stayAwake: ScrcpyArg.fromModel(model.stayAwake),
+        ScrcpyArgNames.showTouches: ScrcpyArg.fromModel(model.showTouches),
+        ScrcpyArgNames.maxSize: ScrcpyArg.fromModel(model.maxSize),
+        ScrcpyArgNames.maxFps: ScrcpyArg.fromModel(model.maxFps),
+        ScrcpyArgNames.videoBitrate: ScrcpyArg.fromModel(model.videoBitrate),
+        ScrcpyArgNames.audioBitrate: ScrcpyArg.fromModel(model.audioBitrate),
+      },
     );
+  }
+
+  @override
+  String toString() {
+    return args.entries
+        .map((e) => '${e.value.paramName} ${e.value.paramValue}')
+        .join(' ');
   }
 }
