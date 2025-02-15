@@ -29,34 +29,27 @@ class ScrcpyArgs with _$ScrcpyArgs {
   const ScrcpyArgs._();
 
   const factory ScrcpyArgs({
-    required ScrcpyArg turnScreenOff,
-    required ScrcpyArg stayAwake,
-    required ScrcpyArg showTouches,
-    required ScrcpyArg maxSize,
-    required ScrcpyArg maxFps,
-    required ScrcpyArg videoBitrate,
-    required ScrcpyArg audioBitrate,
+    required Map<ScrcpyArgNames, ScrcpyArg> args,
   }) = _ScrcpyArgs;
 
   factory ScrcpyArgs.fromModel(ScrcpyArgsModel model) {
     return ScrcpyArgs(
-      turnScreenOff: ScrcpyArg.fromModel(model.turnScreenOff),
-      stayAwake: ScrcpyArg.fromModel(model.stayAwake),
-      showTouches: ScrcpyArg.fromModel(model.showTouches),
-      maxSize: ScrcpyArg.fromModel(model.maxSize),
-      maxFps: ScrcpyArg.fromModel(model.maxFps),
-      videoBitrate: ScrcpyArg.fromModel(model.videoBitrate),
-      audioBitrate: ScrcpyArg.fromModel(model.audioBitrate),
+      args: {
+        ScrcpyArgNames.turnScreenOff: ScrcpyArg.fromModel(model.turnScreenOff),
+        ScrcpyArgNames.stayAwake: ScrcpyArg.fromModel(model.stayAwake),
+        ScrcpyArgNames.showTouches: ScrcpyArg.fromModel(model.showTouches),
+        ScrcpyArgNames.maxSize: ScrcpyArg.fromModel(model.maxSize),
+        ScrcpyArgNames.maxFps: ScrcpyArg.fromModel(model.maxFps),
+        ScrcpyArgNames.videoBitrate: ScrcpyArg.fromModel(model.videoBitrate),
+        ScrcpyArgNames.audioBitrate: ScrcpyArg.fromModel(model.audioBitrate),
+      },
     );
   }
 
-  List<ScrcpyArg> get list => [
-        turnScreenOff,
-        stayAwake,
-        showTouches,
-        maxSize,
-        maxFps,
-        videoBitrate,
-        audioBitrate,
-      ];
+  @override
+  String toString() {
+    return args.entries
+        .map((e) => '${e.value.paramName} ${e.value.paramValue}')
+        .join(' ');
+  }
 }

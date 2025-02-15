@@ -231,13 +231,7 @@ abstract class _ScrcpyArg implements ScrcpyArg {
 
 /// @nodoc
 mixin _$ScrcpyArgs {
-  ScrcpyArg get turnScreenOff => throw _privateConstructorUsedError;
-  ScrcpyArg get stayAwake => throw _privateConstructorUsedError;
-  ScrcpyArg get showTouches => throw _privateConstructorUsedError;
-  ScrcpyArg get maxSize => throw _privateConstructorUsedError;
-  ScrcpyArg get maxFps => throw _privateConstructorUsedError;
-  ScrcpyArg get videoBitrate => throw _privateConstructorUsedError;
-  ScrcpyArg get audioBitrate => throw _privateConstructorUsedError;
+  Map<ScrcpyArgNames, ScrcpyArg> get args => throw _privateConstructorUsedError;
 
   /// Create a copy of ScrcpyArgs
   /// with the given fields replaced by the non-null parameter values.
@@ -252,22 +246,7 @@ abstract class $ScrcpyArgsCopyWith<$Res> {
           ScrcpyArgs value, $Res Function(ScrcpyArgs) then) =
       _$ScrcpyArgsCopyWithImpl<$Res, ScrcpyArgs>;
   @useResult
-  $Res call(
-      {ScrcpyArg turnScreenOff,
-      ScrcpyArg stayAwake,
-      ScrcpyArg showTouches,
-      ScrcpyArg maxSize,
-      ScrcpyArg maxFps,
-      ScrcpyArg videoBitrate,
-      ScrcpyArg audioBitrate});
-
-  $ScrcpyArgCopyWith<$Res> get turnScreenOff;
-  $ScrcpyArgCopyWith<$Res> get stayAwake;
-  $ScrcpyArgCopyWith<$Res> get showTouches;
-  $ScrcpyArgCopyWith<$Res> get maxSize;
-  $ScrcpyArgCopyWith<$Res> get maxFps;
-  $ScrcpyArgCopyWith<$Res> get videoBitrate;
-  $ScrcpyArgCopyWith<$Res> get audioBitrate;
+  $Res call({Map<ScrcpyArgNames, ScrcpyArg> args});
 }
 
 /// @nodoc
@@ -285,114 +264,14 @@ class _$ScrcpyArgsCopyWithImpl<$Res, $Val extends ScrcpyArgs>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? turnScreenOff = null,
-    Object? stayAwake = null,
-    Object? showTouches = null,
-    Object? maxSize = null,
-    Object? maxFps = null,
-    Object? videoBitrate = null,
-    Object? audioBitrate = null,
+    Object? args = null,
   }) {
     return _then(_value.copyWith(
-      turnScreenOff: null == turnScreenOff
-          ? _value.turnScreenOff
-          : turnScreenOff // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      stayAwake: null == stayAwake
-          ? _value.stayAwake
-          : stayAwake // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      showTouches: null == showTouches
-          ? _value.showTouches
-          : showTouches // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      maxSize: null == maxSize
-          ? _value.maxSize
-          : maxSize // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      maxFps: null == maxFps
-          ? _value.maxFps
-          : maxFps // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      videoBitrate: null == videoBitrate
-          ? _value.videoBitrate
-          : videoBitrate // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      audioBitrate: null == audioBitrate
-          ? _value.audioBitrate
-          : audioBitrate // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
+      args: null == args
+          ? _value.args
+          : args // ignore: cast_nullable_to_non_nullable
+              as Map<ScrcpyArgNames, ScrcpyArg>,
     ) as $Val);
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get turnScreenOff {
-    return $ScrcpyArgCopyWith<$Res>(_value.turnScreenOff, (value) {
-      return _then(_value.copyWith(turnScreenOff: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get stayAwake {
-    return $ScrcpyArgCopyWith<$Res>(_value.stayAwake, (value) {
-      return _then(_value.copyWith(stayAwake: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get showTouches {
-    return $ScrcpyArgCopyWith<$Res>(_value.showTouches, (value) {
-      return _then(_value.copyWith(showTouches: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get maxSize {
-    return $ScrcpyArgCopyWith<$Res>(_value.maxSize, (value) {
-      return _then(_value.copyWith(maxSize: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get maxFps {
-    return $ScrcpyArgCopyWith<$Res>(_value.maxFps, (value) {
-      return _then(_value.copyWith(maxFps: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get videoBitrate {
-    return $ScrcpyArgCopyWith<$Res>(_value.videoBitrate, (value) {
-      return _then(_value.copyWith(videoBitrate: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ScrcpyArgs
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ScrcpyArgCopyWith<$Res> get audioBitrate {
-    return $ScrcpyArgCopyWith<$Res>(_value.audioBitrate, (value) {
-      return _then(_value.copyWith(audioBitrate: value) as $Val);
-    });
   }
 }
 
@@ -404,29 +283,7 @@ abstract class _$$ScrcpyArgsImplCopyWith<$Res>
       __$$ScrcpyArgsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {ScrcpyArg turnScreenOff,
-      ScrcpyArg stayAwake,
-      ScrcpyArg showTouches,
-      ScrcpyArg maxSize,
-      ScrcpyArg maxFps,
-      ScrcpyArg videoBitrate,
-      ScrcpyArg audioBitrate});
-
-  @override
-  $ScrcpyArgCopyWith<$Res> get turnScreenOff;
-  @override
-  $ScrcpyArgCopyWith<$Res> get stayAwake;
-  @override
-  $ScrcpyArgCopyWith<$Res> get showTouches;
-  @override
-  $ScrcpyArgCopyWith<$Res> get maxSize;
-  @override
-  $ScrcpyArgCopyWith<$Res> get maxFps;
-  @override
-  $ScrcpyArgCopyWith<$Res> get videoBitrate;
-  @override
-  $ScrcpyArgCopyWith<$Res> get audioBitrate;
+  $Res call({Map<ScrcpyArgNames, ScrcpyArg> args});
 }
 
 /// @nodoc
@@ -442,43 +299,13 @@ class __$$ScrcpyArgsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? turnScreenOff = null,
-    Object? stayAwake = null,
-    Object? showTouches = null,
-    Object? maxSize = null,
-    Object? maxFps = null,
-    Object? videoBitrate = null,
-    Object? audioBitrate = null,
+    Object? args = null,
   }) {
     return _then(_$ScrcpyArgsImpl(
-      turnScreenOff: null == turnScreenOff
-          ? _value.turnScreenOff
-          : turnScreenOff // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      stayAwake: null == stayAwake
-          ? _value.stayAwake
-          : stayAwake // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      showTouches: null == showTouches
-          ? _value.showTouches
-          : showTouches // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      maxSize: null == maxSize
-          ? _value.maxSize
-          : maxSize // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      maxFps: null == maxFps
-          ? _value.maxFps
-          : maxFps // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      videoBitrate: null == videoBitrate
-          ? _value.videoBitrate
-          : videoBitrate // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
-      audioBitrate: null == audioBitrate
-          ? _value.audioBitrate
-          : audioBitrate // ignore: cast_nullable_to_non_nullable
-              as ScrcpyArg,
+      args: null == args
+          ? _value._args
+          : args // ignore: cast_nullable_to_non_nullable
+              as Map<ScrcpyArgNames, ScrcpyArg>,
     ));
   }
 }
@@ -486,34 +313,16 @@ class __$$ScrcpyArgsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ScrcpyArgsImpl extends _ScrcpyArgs {
-  const _$ScrcpyArgsImpl(
-      {required this.turnScreenOff,
-      required this.stayAwake,
-      required this.showTouches,
-      required this.maxSize,
-      required this.maxFps,
-      required this.videoBitrate,
-      required this.audioBitrate})
-      : super._();
+  const _$ScrcpyArgsImpl({required final Map<ScrcpyArgNames, ScrcpyArg> args})
+      : _args = args,
+        super._();
 
+  final Map<ScrcpyArgNames, ScrcpyArg> _args;
   @override
-  final ScrcpyArg turnScreenOff;
-  @override
-  final ScrcpyArg stayAwake;
-  @override
-  final ScrcpyArg showTouches;
-  @override
-  final ScrcpyArg maxSize;
-  @override
-  final ScrcpyArg maxFps;
-  @override
-  final ScrcpyArg videoBitrate;
-  @override
-  final ScrcpyArg audioBitrate;
-
-  @override
-  String toString() {
-    return 'ScrcpyArgs(turnScreenOff: $turnScreenOff, stayAwake: $stayAwake, showTouches: $showTouches, maxSize: $maxSize, maxFps: $maxFps, videoBitrate: $videoBitrate, audioBitrate: $audioBitrate)';
+  Map<ScrcpyArgNames, ScrcpyArg> get args {
+    if (_args is EqualUnmodifiableMapView) return _args;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_args);
   }
 
   @override
@@ -521,23 +330,12 @@ class _$ScrcpyArgsImpl extends _ScrcpyArgs {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ScrcpyArgsImpl &&
-            (identical(other.turnScreenOff, turnScreenOff) ||
-                other.turnScreenOff == turnScreenOff) &&
-            (identical(other.stayAwake, stayAwake) ||
-                other.stayAwake == stayAwake) &&
-            (identical(other.showTouches, showTouches) ||
-                other.showTouches == showTouches) &&
-            (identical(other.maxSize, maxSize) || other.maxSize == maxSize) &&
-            (identical(other.maxFps, maxFps) || other.maxFps == maxFps) &&
-            (identical(other.videoBitrate, videoBitrate) ||
-                other.videoBitrate == videoBitrate) &&
-            (identical(other.audioBitrate, audioBitrate) ||
-                other.audioBitrate == audioBitrate));
+            const DeepCollectionEquality().equals(other._args, _args));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, turnScreenOff, stayAwake,
-      showTouches, maxSize, maxFps, videoBitrate, audioBitrate);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_args));
 
   /// Create a copy of ScrcpyArgs
   /// with the given fields replaced by the non-null parameter values.
@@ -550,29 +348,11 @@ class _$ScrcpyArgsImpl extends _ScrcpyArgs {
 
 abstract class _ScrcpyArgs extends ScrcpyArgs {
   const factory _ScrcpyArgs(
-      {required final ScrcpyArg turnScreenOff,
-      required final ScrcpyArg stayAwake,
-      required final ScrcpyArg showTouches,
-      required final ScrcpyArg maxSize,
-      required final ScrcpyArg maxFps,
-      required final ScrcpyArg videoBitrate,
-      required final ScrcpyArg audioBitrate}) = _$ScrcpyArgsImpl;
+      {required final Map<ScrcpyArgNames, ScrcpyArg> args}) = _$ScrcpyArgsImpl;
   const _ScrcpyArgs._() : super._();
 
   @override
-  ScrcpyArg get turnScreenOff;
-  @override
-  ScrcpyArg get stayAwake;
-  @override
-  ScrcpyArg get showTouches;
-  @override
-  ScrcpyArg get maxSize;
-  @override
-  ScrcpyArg get maxFps;
-  @override
-  ScrcpyArg get videoBitrate;
-  @override
-  ScrcpyArg get audioBitrate;
+  Map<ScrcpyArgNames, ScrcpyArg> get args;
 
   /// Create a copy of ScrcpyArgs
   /// with the given fields replaced by the non-null parameter values.

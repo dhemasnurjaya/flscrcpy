@@ -12,6 +12,8 @@ class ScrcpyConfigWidget extends StatefulWidget {
 }
 
 class _ScrcpyConfigWidgetState extends State<ScrcpyConfigWidget> {
+  late ScrcpyArgs _currentScrcpyArgs;
+
   @override
   void initState() {
     super.initState();
@@ -33,40 +35,11 @@ class _ScrcpyConfigWidgetState extends State<ScrcpyConfigWidget> {
         BlocBuilder<MirroringArgsBloc, MirroringArgsState>(
           builder: (context, state) {
             if (state is MirroringArgsLoaded) {
+              _currentScrcpyArgs = state.scrcpyArgs;
               return Column(
-                children: state.scrcpyArgs.list.map<Widget>((arg) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                arg.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                arg.description,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: _buildArgValue(arg),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                children: state.scrcpyArgs.args.entries
+                    .map<Widget>(_buildConfigItem)
+                    .toList(),
               );
             }
 
@@ -77,24 +50,72 @@ class _ScrcpyConfigWidgetState extends State<ScrcpyConfigWidget> {
     );
   }
 
-  Widget _buildArgValue(ScrcpyArg arg) {
-    switch (arg.type) {
-      case ScrcpyArgTypes.boolean:
-        return Switch(
-          value: bool.parse(arg.paramValue),
-          onChanged: (value) {},
-        );
-      case ScrcpyArgTypes.text:
-        return TextField(
-          controller: TextEditingController(text: arg.paramValue),
-          onChanged: (value) {},
-        );
-      case ScrcpyArgTypes.number:
-        return TextField(
-          controller: TextEditingController(text: arg.paramValue),
+  Widget _buildConfigItem(MapEntry<ScrcpyArgNames, ScrcpyArg> argMapEntry) {
+    final scrcpyArgName = argMapEntry.key;
+    final scrcpyArg = argMapEntry.value;
+
+    final argDescription = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          scrcpyArg.name,
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        Text(
+          scrcpyArg.paramValue,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
+    );
+
+    // TODO: add value validation for number and text
+    final argValueInput = switch (scrcpyArg.type) {
+      ScrcpyArgTypes.boolean => Switch(
+          value: bool.parse(scrcpyArg.paramValue),
+          onChanged: (value) => _onArgValueChanged(scrcpyArgName, value),
+        ),
+      ScrcpyArgTypes.text => TextField(
+          controller: TextEditingController(text: scrcpyArg.paramValue),
+          onChanged: (value) => _onArgValueChanged(scrcpyArgName, value),
+        ),
+      ScrcpyArgTypes.number => TextField(
+          controller: TextEditingController(text: scrcpyArg.paramValue),
           keyboardType: TextInputType.number,
-          onChanged: (value) {},
-        );
-    }
+          onChanged: (value) => _onArgValueChanged(scrcpyArgName, value),
+        ),
+    };
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 3,
+            child: argDescription,
+          ),
+          Expanded(
+            child: argValueInput,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onArgValueChanged(ScrcpyArgNames scrcpyArgName, dynamic value) {
+    final updatedArg = ScrcpyArgs(
+      args: Map.from(_currentScrcpyArgs.args)
+        ..update(
+          scrcpyArgName,
+          (existingArg) => existingArg.copyWith(
+            paramValue: value.toString(),
+          ),
+        ),
+    );
+    context.read<MirroringArgsBloc>().add(UpdateMirroringArgsEvent(updatedArg));
   }
 }

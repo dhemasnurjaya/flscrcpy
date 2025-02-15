@@ -16,13 +16,11 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: [
+            const SizedBox(height: 8),
             ScrcpyInfoWidget(),
             const SizedBox(height: 24),
             ConnectedDeviceListWidget(),

@@ -10,6 +10,16 @@ enum ScrcpyArgTypes {
   boolean,
 }
 
+enum ScrcpyArgNames {
+  turnScreenOff,
+  stayAwake,
+  showTouches,
+  maxSize,
+  maxFps,
+  videoBitrate,
+  audioBitrate,
+}
+
 @freezed
 class ScrcpyArgModel with _$ScrcpyArgModel {
   @JsonSerializable()
@@ -112,13 +122,18 @@ class ScrcpyArgsModel with _$ScrcpyArgsModel {
 
   factory ScrcpyArgsModel.fromEntity(ScrcpyArgs entity) {
     return ScrcpyArgsModel(
-      turnScreenOff: ScrcpyArgModel.fromEntity(entity.turnScreenOff),
-      stayAwake: ScrcpyArgModel.fromEntity(entity.stayAwake),
-      showTouches: ScrcpyArgModel.fromEntity(entity.showTouches),
-      maxSize: ScrcpyArgModel.fromEntity(entity.maxSize),
-      maxFps: ScrcpyArgModel.fromEntity(entity.maxFps),
-      videoBitrate: ScrcpyArgModel.fromEntity(entity.videoBitrate),
-      audioBitrate: ScrcpyArgModel.fromEntity(entity.audioBitrate),
+      turnScreenOff:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.turnScreenOff]!),
+      stayAwake:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.stayAwake]!),
+      showTouches:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.showTouches]!),
+      maxSize: ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.maxSize]!),
+      maxFps: ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.maxFps]!),
+      videoBitrate:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.videoBitrate]!),
+      audioBitrate:
+          ScrcpyArgModel.fromEntity(entity.args[ScrcpyArgNames.audioBitrate]!),
     );
   }
 

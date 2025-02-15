@@ -14,6 +14,7 @@ import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_mirrorin
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/get_scrcpy_info.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/list_connected_devices.dart';
+import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/set_scrcpy_args.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/start_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/domain/use_cases/stop_mirroring.dart';
 import 'package:flscrcpy/features/screen_mirroring/presentation/bloc/devices/devices_bloc.dart';
@@ -96,6 +97,9 @@ void setup() {
   getIt.registerLazySingleton<GetScrcpyArgs>(
     () => GetScrcpyArgs(getIt()),
   );
+  getIt.registerLazySingleton<SetScrcpyArgs>(
+    () => SetScrcpyArgs(getIt()),
+  );
 
   // blocs
   getIt.registerSingletonAsync<ThemeModeCubit>(
@@ -128,6 +132,7 @@ void setup() {
   getIt.registerFactory<MirroringArgsBloc>(
     () => MirroringArgsBloc(
       getScrcpyArgs: getIt(),
+      setScrcpyArgs: getIt(),
     ),
   );
 
